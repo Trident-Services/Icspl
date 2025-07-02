@@ -123,6 +123,34 @@
         opacity: 1;
         transform: translateY(0);
       }
+      
+      /* Image carousel styles */
+      .carousel-container {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+      }
+      
+      .carousel-slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      
+      .carousel-slide.active {
+        opacity: 1;
+      }
+      
+      .carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     </style>
   </head>
   <body class="scroll-smooth">
@@ -160,6 +188,17 @@
       <!-- Intelligent Transportation & Mobility -->
       <div class="sector-card reveal">
         <h3 class="text-2xl font-semibold">Intelligent Transportation & Mobility</h3>
+        <div class="carousel-container" id="transportation-carousel">
+          <div class="carousel-slide active">
+            <img src="https://img.freepik.com/premium-photo/concept-transportation-technology-intelligent-transport-systems-its-mobility-as-service_76964-61784.jpg" alt="Transportation System">
+          </div>
+          <div class="carousel-slide">
+            <img src="https://assets.bizclikmedia.net/1800/8703d39a1202df2fa38f418757008edd:18bdfacbafed00c6369eba97b05b8a59/gettyimages-1300287214-1.jpg.jpg" alt="Smart Traffic">
+          </div>
+          <div class="carousel-slide">
+            <img src="https://www.openaccessgovernment.org/wp-content/uploads/2021/06/dreamstime_xl_192386794-scaled.jpg" alt="Vehicle Detection">
+          </div>
+        </div>
         <ul class="sector-list">
           <li>ITS & Smart Parking</li>
           <li>Tolling Solutions</li>
@@ -173,6 +212,17 @@
       <!-- Smart City & IoT -->
       <div class="sector-card reveal">
         <h3 class="text-2xl font-semibold">Smart City & IoT</h3>
+        <div class="carousel-container" id="smartcity-carousel">
+          <div class="carousel-slide active">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Smart City">
+          </div>
+          <div class="carousel-slide">
+            <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cityscape">
+          </div>
+          <div class="carousel-slide">
+            <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1413&q=80" alt="Urban IoT">
+          </div>
+        </div>
         <ul class="sector-list">
           <li>Smart City Integration</li>
           <li>IoT Deployments</li>
@@ -184,6 +234,17 @@
       <!-- Defense & Security -->
       <div class="sector-card reveal">
         <h3 class="text-2xl font-semibold">Defense & Security</h3>
+        <div class="carousel-container" id="defense-carousel">
+          <div class="carousel-slide active">
+            <img src="https://images.unsplash.com/photo-1582408921715-18e7806365c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Defense Technology">
+          </div>
+          <div class="carousel-slide">
+            <img src="https://images.unsplash.com/photo-1584735422182-45196e8d9ba3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Security System">
+          </div>
+          <div class="carousel-slide">
+            <img src="https://images.unsplash.com/photo-1584824486509-112e4181ff6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Military Tech">
+          </div>
+        </div>
         <ul class="sector-list">
           <li>Military Technologies</li>
           <li>Security Systems</li>
@@ -192,7 +253,6 @@
 
       <!-- CTA Section -->
       <div class="text-center mt-16 reveal">
-        <!-- <h3 class="text-2xl font-semibold mb-6">Ready to Transform Your Business?</h3> -->
         <a href="contact.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105">
           Contact Us Today
         </a>
@@ -266,6 +326,46 @@
       
       window.addEventListener('scroll', scrollReveal);
       
+      // Carousel functionality
+      function initCarousels() {
+        const carousels = [
+          { id: 'transportation-carousel', interval: 1000 },
+          { id: 'smartcity-carousel', interval: 1000 },
+          { id: 'defense-carousel', interval: 1000 }
+        ];
+        
+        carousels.forEach(carousel => {
+          const container = document.getElementById(carousel.id);
+          if (!container) return;
+          
+          const slides = container.querySelectorAll('.carousel-slide');
+          let currentSlide = 0;
+          let intervalId;
+          
+          function showNextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+          }
+          
+          function startCarousel() {
+            intervalId = setInterval(showNextSlide, carousel.interval);
+          }
+          
+          // Start the carousel
+          startCarousel();
+          
+          // Pause on hover
+          container.addEventListener('mouseenter', () => {
+            clearInterval(intervalId);
+          });
+          
+          container.addEventListener('mouseleave', () => {
+            startCarousel();
+          });
+        });
+      }
+      
       document.addEventListener("DOMContentLoaded", () => {
         // Close mobile menu when clicking links
         document.querySelectorAll('#mobile-menu a').forEach(link => {
@@ -279,6 +379,9 @@
         
         // Initial scroll reveal check
         scrollReveal();
+        
+        // Initialize carousels
+        initCarousels();
       });
     </script>
   </body>
