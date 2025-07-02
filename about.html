@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About - ICSPL</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <style>
+      /* Custom CSS */
+      body {
+        background-color: #000;
+        color: #fff;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      .logo {
+        height: 60px;
+        width: auto;
+        background-color: white;
+        padding: 4px;
+        border-radius: 4px;
+        transition: transform 0.3s ease;
+      }
+      .logo:hover {
+        transform: scale(1.05);
+      }
+      .footer-logo {
+        height: 30px;
+        width: auto;
+        background-color: white;
+        padding: 2px;
+        border-radius: 2px;
+        opacity: 0.9;
+      }
+      #mobile-menu {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 0;
+        overflow: hidden;
+      }
+      #mobile-menu.show {
+        max-height: 500px;
+      }
+      .content-box {
+        background-color: rgba(20, 20, 20, 0.8);
+        border: 1px solid #333;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .nav-link {
+        transition: color 0.3s ease;
+      }
+      .nav-link:hover {
+        color: #fff;
+      }
+      .header-shadow {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body class="scroll-smooth">
+    <!-- Header / Navigation -->
+    <header class="fixed w-full bg-black text-white z-50 header-shadow">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <img src="Header---White-BG.jpg" alt="ICSPL Logo" class="logo mr-2">
+          <span class="text-xl font-bold hidden sm:inline text-gray-100">ICSPL</span>
+        </div>
+        <button class="md:hidden text-white focus:outline-none" onclick="toggleMenu()" aria-label="Toggle navigation menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        <nav class="hidden md:flex space-x-6 text-sm md:text-base">
+          <a href="/Home.html" class="nav-link text-gray-300">Home</a>
+          <a href="/about.html" class="nav-link text-white font-medium">About</a>
+          <a href="/services.html" class="nav-link text-gray-300">Services</a>
+          <a href="/sectors.html" class="nav-link text-gray-300">Sectors</a>
+          <a href="/contact.html" class="nav-link text-gray-300">Contact</a>
+        </nav>
+      </div>
+      <div id="mobile-menu" class="md:hidden px-4 bg-gray-900">
+        <a href="/index.html" class="block py-3 border-b border-gray-800 text-gray-300 hover:text-white">Home</a>
+        <a href="/about.html" class="block py-3 border-b border-gray-800 text-white font-medium">About</a>
+        <a href="/services.html" class="block py-3 border-b border-gray-800 text-gray-300 hover:text-white">Services</a>
+        <a href="/sectors.html" class="block py-3 border-b border-gray-800 text-gray-300 hover:text-white">Sectors</a>
+        <a href="/contact.html" class="block py-3 text-gray-300 hover:text-white">Contact</a>
+      </div>
+    </header>
+
+    <main class="pt-28 px-4 py-16 max-w-7xl mx-auto">
+      <div class="content-box p-6 md:p-10 rounded-lg">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">About Us</h2>
+        <p class="text-lg text-gray-300 leading-relaxed">
+          ICSPL, based in Kurnool, Andhra Pradesh, excels in engineering design and technology integration. 
+          We empower public, private, and defense sectors by delivering systems that drive efficiency, 
+          safety, and sustainability.
+        </p>
+        
+        <div class="mt-8 grid md:grid-cols-2 gap-8">
+          <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-xl font-semibold mb-4 text-white">Our Mission</h3>
+            <p class="text-gray-300">
+              To deliver intelligent, sustainable solutions that transform industries and improve lives 
+              through innovative engineering and technology integration.
+            </p>
+          </div>
+          <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-xl font-semibold mb-4 text-white">Our Vision</h3>
+            <p class="text-gray-300">
+              To be a global leader in smart engineering solutions, driving the transition to smarter, 
+              more sustainable infrastructure and systems.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="p-8 bg-black text-white mt-20 border-t border-gray-900">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-4 md:mb-0">
+          <img src="Header---White-BG.jpg" alt="ICSPL Logo" class="footer-logo mr-3">
+          <div>
+            <div class="text-lg font-bold text-gray-100">ICSPL</div>
+            <div class="text-sm text-gray-500">Intelligent Connect Solutions Pvt. Ltd.</div>
+          </div>
+        </div>
+        <div class="text-gray-500 text-sm">
+          &copy; <span id="year"></span> All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Toggle mobile menu
+      function toggleMenu() {
+        const menu = document.getElementById("mobile-menu");
+        menu.classList.toggle("show");
+        menu.classList.toggle("hidden");
+      }
+      
+      document.addEventListener("DOMContentLoaded", () => {
+        // Close mobile menu when link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+          link.addEventListener('click', () => {
+            const menu = document.getElementById("mobile-menu");
+            if (menu.classList.contains("show")) {
+              menu.classList.remove("show");
+              menu.classList.add("hidden");
+            }
+          });
+        });
+        
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+        
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+          const header = document.querySelector('header');
+          if (window.scrollY > 10) {
+            header.classList.add('header-shadow');
+          } else {
+            header.classList.remove('header-shadow');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
