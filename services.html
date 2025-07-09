@@ -1,267 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Services - ICSPL</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/glider-js/1.7.8/glider.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="stylesheet" href="/services.css">
-
-  </head>
-  <body class="scroll-smooth">
-    <!-- Header / Navigation -->
-    <header class="fixed w-full bg-black text-white z-50 shadow-md" id="main-header">
-      <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <div>
-          <img src="Header---White-BG.jpg" alt="ICSPL Logo" class="h-20 object-contain" style="background-color: white; padding: 2px; border-radius: 2px;" />
-          
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICSPL Services</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/glider-js/1.7.8/glider.min.css">  
+    <link rel="stylesheet" href="services.css">
+</head>
+<body class="bg-gray-900 text-gray-200">
+    <!-- Header -->
+    <header class="bg-black text-white shadow-lg fixed w-full z-50 border-b border-gray-800">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="logo"><a href="/index.html">
+                <img src="Header--Transparent.png" alt="ICSPL Logo" style="height: 60px;width:40rem">
+              </a>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="/index.html" class="hover:text-blue-400 transition-colors">Home</a>
+                <a href="/about.html" class="hover:text-blue-400 transition-colors">About</a>
+                <a href="/services.html" class="text-blue-400 font-semibold">Services</a>
+                <a href="/sectors.html" class="hover:text-blue-400 transition-colors">Sectors</a>
+                <a href="/contact.html" class="hover:text-blue-400 transition-colors">Contact</a>
+            </nav>
+            <button class="md:hidden text-white" id="mobile-menu-button">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
-        <button class="md:hidden text-white focus:outline-none" onclick="toggleMenu()" aria-label="Toggle navigation menu">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-        <nav class="hidden md:flex space-x-6 text-sm md:text-base">
-          <a href="/index.htmls" class="hover:text-blue-400 transition-colors">Home</a>
-          <a href="/about.html" class="hover:text-blue-400 transition-colors">About</a>
-          <a href="/services.html" class="text-blue-400 font-medium">Services</a>
-          <a href="/sectors.html" class="hover:text-blue-400 transition-colors">Sectors</a>
-          <a href="/contact.html" class="hover:text-blue-400 transition-colors">Contact</a>
-        </nav>
-      </div>
-      <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 bg-black/95 backdrop-blur-sm">
-        <a href="/Home.html" class="block py-2 hover:text-blue-400 transition-colors">Home</a>
-        <a href="/about.html" class="block py-2 hover:text-blue-400 transition-colors">About</a>
-        <a href="/services.html" class="block py-2 text-blue-400 font-medium">Services</a>
-        <a href="/sectors.html" class="block py-2 hover:text-blue-400 transition-colors">Sectors</a>
-        <a href="/contact.html" class="block py-2 hover:text-blue-400 transition-colors">Contact</a>
-      </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-gray-900" id="mobile-menu">
+            <div class="px-4 py-3 space-y-3">
+                <a href="/index.html" class="block hover:text-blue-400 transition-colors">Home</a>
+                <a href="/about.html" class="block hover:text-blue-400 transition-colors">About</a>
+                <a href="/services.html" class="block text-blue-400 font-semibold">Services</a>
+                <a href="/sectors.html" class="block hover:text-blue-400 transition-colors">Sectors</a>
+                <a href="/contact.html" class="block hover:text-blue-400 transition-colors">Contact</a>
+            </div>
+        </div>
     </header>
 
-    <main class="pt-28 px-6 py-20 max-w-7xl mx-auto">
-      <h2 class="text-4xl font-bold mb-6 text-center section-title reveal">Our Services</h2>
+    <!-- Main Content -->
+    <main class="pt-24 pb-16">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-center mb-2 text-white animate__animated animate__fadeIn">Our Services</h1>
+            <p class="text-center text-gray-400 mb-12 max-w-2xl mx-auto animate__animated animate__fadeIn animate__delay-1s">
+                Comprehensive solutions tailored to your business needs
+            </p>
 
-      <!-- Engineering & Consultancy -->
-      <div class="mb-20 reveal">
-        <h3 class="text-2xl font-semibold mb-8 text-center">Engineering & Consultancy</h3>
-        
-        <div class="service-slider glider-contain">
-          <div class="glider" id="engineering-slider">
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="System Integration" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">System Integration & Deployment</h4>
-                  <p>Seamless integration of complex systems for optimal performance and efficiency across your operations.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Engineering Design" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Engineering Design & Advisory</h4>
-                  <p>Custom engineering solutions and expert advisory services tailored to your specific business needs.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Research & Development" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Research & Development</h4>
-                  <p>Cutting-edge research and innovative development to keep you ahead of the competition.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1581094793057-b0ab4a915d9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Technical Consulting" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Technical Consulting</h4>
-                  <p>Expert technical guidance to optimize your engineering processes and systems.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <button aria-label="Previous" class="glider-prev">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <button aria-label="Next" class="glider-next">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <div role="tablist" class="glider-dots" id="engineering-dots"></div>
+            <!-- Services will be loaded here dynamically -->
+            <div id="services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
-      </div>
-
-      <!-- Data & Digital Systems -->
-      <div class="mb-20 reveal">
-        <h3 class="text-2xl font-semibold mb-8 text-center">Data & Digital Systems</h3>
-        
-        <div class="service-slider glider-contain">
-          <div class="glider" id="data-slider">
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Data Cleaning" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Data Cleaning & Analysis</h4>
-                  <p>Transform raw, unstructured data into clean, actionable insights for better decision making.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Dashboards" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Report & Dashboard Generation</h4>
-                  <p>Interactive, real-time dashboards that visualize your key metrics and KPIs.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Data Center" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Data Centre Design & Implementation</h4>
-                  <p>Scalable, secure data infrastructure solutions tailored to your business requirements.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1597852074816-d933c7d2b988?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Digital Transformation" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Digital Transformation</h4>
-                  <p>Comprehensive strategies to modernize your business with cutting-edge digital solutions.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <button aria-label="Previous" class="glider-prev">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <button aria-label="Next" class="glider-next">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <div role="tablist" class="glider-dots" id="data-dots"></div>
-        </div>
-      </div>
-
-      <!-- Security & Defense -->
-      <div class="mb-16 reveal">
-        <h3 class="text-2xl font-semibold mb-8 text-center">Security & Defense</h3>
-        
-        <div class="service-slider glider-contain">
-          <div class="glider" id="security-slider">
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Military Trainers" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Military Trainers & Wire Harness Systems</h4>
-                  <p>Specialized training systems and robust wire harness solutions for defense applications.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1581093057305-3ec4a37a94f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Test Jigs" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Test Jigs & Reverse Engineering</h4>
-                  <p>Precision testing equipment and reverse engineering services for critical systems.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Surveillance" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Advanced CCTV & Surveillance Systems</h4>
-                  <p>State-of-the-art security monitoring with AI-powered analytics and threat detection.</p>
-                </div>
-              </div>
-            </div>
-            <div class="glider-slide">
-              <div class="service-card gradient-border h-full">
-                <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cyber Security" class="w-full">
-                <div class="card-content">
-                  <h4 class="text-xl">Cyber Security Solutions</h4>
-                  <p>Comprehensive protection against digital threats with multi-layered security protocols.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <button aria-label="Previous" class="glider-prev">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <button aria-label="Next" class="glider-next">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <div role="tablist" class="glider-dots" id="security-dots"></div>
-        </div>
-      </div>
-
-      <!-- CTA Section -->
-      <div class="text-center mt-16 reveal">
-        <!-- <h3 class="text-2xl font-semibold mb-6">Ready to Transform Your Business?</h3> -->
-        <a href="contact.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 pulse-effect">
-          Contact Us Today
-        </a>
-      </div>
     </main>
 
-    <footer class="text-center p-8 bg-gray-900 text-white mt-20">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-          <div class="mb-6 md:mb-0">
-            <img src="Header---White-BG.jpg" alt="ICSPL Logo" class="h-16 object-contain mx-auto md:mx-0" style="background-color: white; padding: 4px; border-radius: 4px;" />
-          </div>
-          <div class="flex space-x-6 mb-6 md:mb-0">
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
-              </svg>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-              </svg>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 3.807.058h.468c2.456 0 2.784-.011 3.807-.058.975-.045 1.504-.207 1.857-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-3.807v-.468c0-2.456-.011-2.784-.058-3.807-.045-.975-.207-1.504-.344-1.857a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"></path>
-              </svg>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
-              </svg>
-            </a>
-          </div>
+    <!-- Footer -->
+    <footer class="bg-black text-gray-400 py-12 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <img src="/Header--Transparent.png" alt="ICSPL Logo" class="h-10"><div>
+                        <!-- <p class="mt-2 text-sm">Innovative solutions for a digital world</p> -->
+                    </div>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.825 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489z"/></svg>
+                    </a>
+                    <a href="#" class="hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="#" class="hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-sm">
+                <p>&copy; 2024 ICSPL. All rights reserved.</p>
+            </div>
         </div>
-        <div class="border-t border-gray-800 pt-8">
-          <p>&copy; 2024 Intelligent Connect Solutions Pvt. Ltd. All rights reserved.</p>
-        </div>
-      </div>
     </footer>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/glider-js/1.7.8/glider.min.js"></script>
-    <script src="./services.js"></script>
-  </body>
+
+    <script src="services.js"></script>
+</body>
 </html>

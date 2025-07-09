@@ -1,266 +1,137 @@
-:root {
-        --primary: #3b82f6;
-        --dark: #111827;
-        --light: #f3f4f6;
-      }
-      
-      body {
-        background-color: var(--dark);
-        color: var(--light);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      }
-      
-      .glider-slide {
-        padding: 0 15px;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-      }
-      
-      .service-slider {
-        max-width: 1200px;
-        margin: 0 auto 3rem;
-      }
-      
-      .glider-prev, .glider-next {
-        top: 50%;
-        transform: translateY(-50%);
-        width: 40px;
-        height: 40px;
-        background-color: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(5px);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-      }
-      
-      .glider-prev:hover, .glider-next:hover {
-        background-color: var(--primary);
-        transform: translateY(-50%) scale(1.1);
-      }
-      
-      .glider-prev {
-        left: -20px;
-      }
-      
-      .glider-next {
-        right: -20px;
-      }
-      
-      .glider-contain {
-        position: relative;
-      }
-      
-      .glider-dots {
-        display: flex;
-        justify-content: center;
-        margin: 25px auto 0;
-        gap: 8px;
-      }
-      
-      .glider-dot {
-        display: block;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-      
-      .glider-dot:hover {
-        background: rgba(255, 255, 255, 0.6);
-      }
-      
-      .glider-dot.active {
-        background: var(--primary);
-        transform: scale(1.2);
-      }
-      
-      .service-card {
-        background: linear-gradient(145deg, #1f2937, #111827);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        height: 100%;
-      }
-      
-      .service-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-      }
-      
-      .service-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-      }
-      
-      .service-card:hover img {
-        transform: scale(1.05);
-      }
-      
-      .card-content {
-        padding: 1.5rem;
-      }
-      
-      .card-content h4 {
-        color: white;
-        font-weight: 600;
-        margin-bottom: 0.75rem;
-        position: relative;
-        display: inline-block;
-      }
-      
-      .card-content h4::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--primary);
-        transition: width 0.3s ease;
-      }
-      
-      .service-card:hover .card-content h4::after {
-        width: 100%;
-      }
-      
-      .card-content p {
-        color: #d1d5db;
-        font-size: 0.95rem;
-        line-height: 1.5;
-      }
-      
-      /* Animated gradient border */
-      .gradient-border {
-        position: relative;
-        border-radius: 12px;
-      }
-      
-      .gradient-border::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        z-index: -1;
-        background: linear-gradient(45deg, 
-          #3b82f6, #ec4899, #f59e0b, #10b981);
-        background-size: 400% 400%;
-        border-radius: 14px;
-        opacity: 0;
-        transition: opacity 0.3s ease, background-position 5s ease;
-      }
-      
-      .gradient-border:hover::before {
-        opacity: 1;
-        animation: gradientMove 8s ease infinite;
-      }
-      
-      @keyframes gradientMove {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-      
-      /* Header animation */
-      header {
-        transition: all 0.3s ease;
-      }
-      
-      header.scrolled {
-        background-color: rgba(17, 24, 39, 0.95);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(8px);
-      }
-      
-      /* Section title styling */
-      .section-title {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 3rem;
-      }
-      
-      .section-title::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80px;
-        height: 3px;
-        background: var(--primary);
-        border-radius: 3px;
-      }
-      
-      /* Pulse animation for CTA */
-      @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-        70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-      }
-      
-      .pulse-effect {
-        animation: pulse 2s infinite;
-      }
-      
-      /* Scroll reveal animation */
-      .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.6s ease;
-      }
-      
-      .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
-      }
-       .sector-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    max-width: 800px;
-  }
+/* Custom styles for the black theme */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+/* .logo {
+height: 80px;
+width: auto;
+} */
 
-  .carousel-container {
-    width: 200px;
-    height: 150px;
+.service-card {
+    background: #1a1a1a;
+    border-radius: 10px;
     overflow: hidden;
-    position: relative;
-  }
+    transition: all 0.3s ease;
+    border: 1px solid #2d2d2d;
+}
 
-  .carousel-slide {
-    display: flex;
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: #3b82f6;
+}
+
+.service-card img {
+    height: 200px;
     width: 100%;
-    height: 100%;
-    animation: slide 12s infinite;
-  }
-
-  .carousel-slide img {
-    width: 200px;
-    height: 150px;
     object-fit: cover;
-    flex-shrink: 0;
-  }
+    border-bottom: 1px solid #2d2d2d;
+}
 
-  @keyframes slide {
-    0% { transform: translateX(0%); }
-    25% { transform: translateX(-100%); }
-    50% { transform: translateX(-200%); }
-    75% { transform: translateX(-300%); }
-    100% { transform: translateX(0%); }
-  }
+.service-content {
+    padding: 1.5rem;
+}
 
-  .sector-content {
-    flex: 1;
-  }
+.service-content h3 {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
 
-  .sector-list {
-    margin-top: 10px;
-    list-style-type: disc;
-    padding-left: 20px;
-  }
+.service-content p {
+    color: #a1a1aa;
+    margin-bottom: 1rem;
+}
+
+.key-offerings {
+    margin-top: 1rem;
+}
+
+.key-offerings li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #d1d5db;
+}
+
+.key-offerings li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #3b82f6;
+    font-weight: bold;
+}
+
+/* Animation classes */
+.animate-delay-200 {
+    animation-delay: 0.2s;
+}
+
+.animate-delay-400 {
+    animation-delay: 0.4s;
+}
+
+/* Mobile menu animation */
+#mobile-menu {
+    transition: all 0.3s ease;
+}
+/* Slider Styles */
+.glider-contain {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.glider {
+    margin: 0 auto;
+    position: relative;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    transform: translateZ(0);
+}
+
+.glider-slide {
+    min-width: 150px;
+}
+
+.glider-next, .glider-prev {
+    position: absolute;
+    z-index: 2;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    opacity: 1;
+    transition: opacity 0.5s cubic-bezier(.17,.67,.83,.67);
+}
+
+.glider-dots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.glider-dots button {
+    background-color: #374151;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border-radius: 50%;
+    margin: 0 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.glider-dots button.active {
+    background-color: #3B82F6;
+    border-color: #3B82F6;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .glider-slide {
+        padding: 0 10px;
+    }
+}
