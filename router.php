@@ -8,8 +8,14 @@ switch ($uri) {
     case '/register':
         require __DIR__ . '/backend/create_admin.php';
         break;
+    case '/admin':
+        require __DIR__ . '/backend/admin.php';
+        break;
     case '/forgot-password':
         require __DIR__ . '/backend/forgot_password.php';
+        break;
+    case '/contacts':
+        require __DIR__ . '/public/pages/contact.html';
         break;
     default:
         $file = __DIR__ . $uri;

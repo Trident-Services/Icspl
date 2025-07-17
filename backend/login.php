@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $conn = new mysqli("localhost", "root", "root", "icspl");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -17,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (password_verify($password, $hashedPassword)) {
             $_SESSION["admin"] = $email;
-            header("Location: admin.php");
+            header("Location: /backend/admin.php");
             exit();
         } else {
             $error = "❌ Invalid password.";
