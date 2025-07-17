@@ -2,22 +2,37 @@
 session_start();
 
 $conn = new mysqli("localhost", "root", "root", "icspl");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"];
+    $email = trim($_POST["email"]);
     $password = $_POST["password"];
 
-    $stmt = $conn->prepare("SELECT password FROM admin_users WHERE email = ?");
+    // Check if email exists
+    $stmt = $conn->prepare("SELECT id, password FROM admin_users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
-    if ($stmt->num_rows == 1) {
-        $stmt->bind_result($hashedPassword);
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($admin_id, $hashedPassword);
         $stmt->fetch();
 
         if (password_verify($password, $hashedPassword)) {
+            // Successful login
             $_SESSION["admin"] = $email;
+
+            // Log login attempt with email
+            $log_stmt = $conn->prepare("INSERT INTO admin_login_logs (email) VALUES (?)");
+            $log_stmt->bind_param("s", $email);
+            $log_stmt->execute();
+            $log_stmt->close();
+
+            // Redirect to admin page
             header("Location: /backend/admin.php");
             exit();
         } else {
@@ -26,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $error = "⚠️ Email not found.";
     }
+
     $stmt->close();
 }
 ?>
@@ -36,12 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Admin Login</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -51,12 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             justify-content: center;
             animation: fadeIn 1s ease-in-out;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .login-box {
             background: white;
             padding: 40px;
@@ -65,18 +74,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             max-width: 400px;
         }
-
         .login-box h2 {
             text-align: center;
             margin-bottom: 25px;
             color: #333;
             font-weight: 600;
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         .form-group input {
             width: 100%;
             padding: 12px;
@@ -86,12 +92,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 15px;
             transition: 0.3s;
         }
-
         .form-group input:focus {
             border-color: #667eea;
             box-shadow: 0 0 5px rgba(102, 126, 234, 0.4);
         }
-
         button {
             width: 100%;
             padding: 12px;
@@ -104,37 +108,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             cursor: pointer;
             transition: 0.3s ease-in-out;
         }
-
         button:hover {
             transform: scale(1.02);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-
         .error {
             margin-top: 15px;
             text-align: center;
             color: red;
             font-size: 14px;
         }
-
         .login-icon {
             text-align: center;
             font-size: 40px;
             color: #667eea;
             margin-bottom: 15px;
         }
-
         .forgot {
             text-align: center;
             margin-top: 15px;
         }
-
         .forgot a {
             color: #667eea;
             text-decoration: none;
             font-size: 14px;
         }
-
         .forgot a:hover {
             text-decoration: underline;
         }
@@ -154,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit">Login</button>
         </form>
         <div class="forgot">
-            <a href="forgot_password.php">Forgot Password?</a>
+            <a href="/backend/forgot_password.php">Forgot Password?</a>
         </div>
         <?php if (!empty($error)) echo "<div class='error'>$error</div>"; ?>
     </div>

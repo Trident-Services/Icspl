@@ -46,7 +46,40 @@
         // Set current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
       });
-    </script>
+
+  function isValidEmail(email) {
+    // Allow only specific domains
+    const allowedDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'protonmail.com', 'icloud.com'];
+    const domain = email.substring(email.lastIndexOf("@") + 1).toLowerCase();
+    return allowedDomains.includes(domain);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Close mobile menu when link is clicked
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        const menu = document.getElementById("mobile-menu");
+        if (!menu.classList.contains('hidden')) {
+          menu.classList.add('hidden');
+        }
+      });
+    });
+
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Form email validation
+    const form = document.querySelector("form");
+    form.addEventListener("submit", function (e) {
+      const emailInput = form.querySelector('input[name="gmail"]').value;
+      if (!isValidEmail(emailInput)) {
+        e.preventDefault(); // stop form
+        alert("Please enter a valid email (gmail.com, yahoo.com, outlook.com, etc.)");
+      }
+    });
+  });
+</script>
+
   </head>
   <body class="scroll-smooth">
     <!-- Header / Navigation -->

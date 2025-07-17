@@ -17,6 +17,10 @@ switch ($uri) {
     case '/contacts':
         require __DIR__ . '/public/pages/contact.html';
         break;
+    case '/logout':
+        require __DIR__ . '/backend/logout.php';
+        break;
+
     default:
         $file = __DIR__ . $uri;
         if (file_exists($file)) {
