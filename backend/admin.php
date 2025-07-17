@@ -3,14 +3,14 @@ session_start();
 
 // Check if admin is logged in
 if (!isset($_SESSION["admin"])) {
-    header("Location: login.php");
+    header("Location: backend/login.php");
     exit();
 }
 
 // Handle logout
 if (isset($_GET["logout"])) {
     session_destroy();
-    header("Location: login.php");
+    header("Location: logout.php");
     exit();
 }
 
