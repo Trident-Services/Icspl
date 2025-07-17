@@ -1,138 +1,193 @@
+// login.php
 <?php
 session_start();
-if (!isset($_SESSION["admin"])) {
-    header("Location: login.php");
-    exit();
-}
-
 $conn = new mysqli("localhost", "root", "root", "icspl");
 
-$result = $conn->query("SELECT * FROM users");
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    $stmt = $conn->prepare("SELECT password FROM admin_users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows == 1) {
+        $stmt->bind_result($hashedPassword);
+        $stmt->fetch();
+
+        if (password_verify($password, $hashedPassword)) {
+            $_SESSION["admin"] = $email;
+            header("Location: admin.php");
+            exit();
+        } else {
+            $error = "❌ Invalid password.";
+        }
+    } else {
+        $error = "⚠️ Email not found.";
+    }
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f4f6f8;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 20px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h2 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .logout {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        .logout:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .container {
-            padding: 30px;
-        }
-
-        h3 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 14px 16px;
-            text-align: left;
-        }
-
-        th {
-            background: #667eea;
-            color: white;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
-
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        tr:hover {
-            background: #eef2ff;
-        }
-
-        td {
-            color: #333;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            th, td {
-                padding: 10px;
-                font-size: 14px;
-            }
-        }
-    </style>
+    <title>Admin Login</title>
 </head>
 <body>
+    <div class="login-box">
+        <h2>Admin Panel Login</h2>
+        <form method="post">
+            <input type="email" name="email" placeholder="Email" required><br><br>
+            <input type="password" name="password" placeholder="Password" required><br><br>
+            <button type="submit">Login</button>
+        </form>
+        <div>
+            <a href="forgot_password.php">Forgot Password?</a>
+        </div>
+        <?php if (!empty($error)) echo "<div style='color:red;'>$error</div>"; ?>
+    </div>
+</body>
+</html>
 
-<div class="header">
-    <h2>Welcome, <?php echo htmlspecialchars($_SESSION["admin"]); ?></h2>
-    <a class="logout" href="logout.php">Logout</a>
-</div>
 
-<div class="container">
-    <h3>Users Table Data:</h3>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Gmail</th>
-            <th>Requirements</th>
-        </tr>
-        <?php while ($row = $result->fetch_assoc()) { ?>
-        <tr>
-            <td><?php echo htmlspecialchars($row["id"]); ?></td>
-            <td><?php echo htmlspecialchars($row["name"]); ?></td>
-            <td><?php echo htmlspecialchars($row["phone_number"]); ?></td>
-            <td><?php echo htmlspecialchars($row["gmail"]); ?></td>
-            <td><?php echo htmlspecialchars($row["requirements"]); ?></td>
-        </tr>
-        <?php } ?>
-    </table>
-</div>
+// forgot_password.php
+<?php
+session_start();
+$conn = new mysqli("localhost", "root", "root", "icspl");
+$message = "";
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST["email"];
+    $otp = rand(100000, 999999);
+    $expiry = date("Y-m-d H:i:s", strtotime("+10 minutes"));
+
+    $stmt = $conn->prepare("SELECT id FROM admin_users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows === 1) {
+        $stmt = $conn->prepare("UPDATE admin_users SET otp = ?, otp_expiry = ? WHERE email = ?");
+        $stmt->bind_param("sss", $otp, $expiry, $email);
+        $stmt->execute();
+
+        $subject = "OTP for Password Reset";
+        $body = "Your OTP is: $otp. It expires in 10 minutes.";
+        $headers = "From: no-reply@icspl.com";
+
+        if (mail($email, $subject, $body, $headers)) {
+            $_SESSION['reset_email'] = $email;
+            header("Location: verify_otp.php");
+            exit();
+        } else {
+            $message = "❌ OTP sending failed.";
+        }
+    } else {
+        $message = "⚠️ Email not found.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head><title>Forgot Password</title></head>
+<body>
+    <h2>Forgot Password</h2>
+    <form method="post">
+        <input type="email" name="email" placeholder="Enter your registered email" required><br><br>
+        <button type="submit">Send OTP</button>
+    </form>
+    <?php if ($message) echo "<p style='color:red;'>$message</p>"; ?>
+</body>
+</html>
+
+
+// verify_otp.php
+<?php
+session_start();
+$conn = new mysqli("localhost", "root", "root", "icspl");
+
+if (!isset($_SESSION['reset_email'])) {
+    header("Location: forgot_password.php");
+    exit();
+}
+
+$message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_SESSION['reset_email'];
+    $otp = $_POST['otp'];
+
+    $stmt = $conn->prepare("SELECT otp, otp_expiry FROM admin_users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->bind_result($dbOtp, $expiry);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($otp === $dbOtp && strtotime($expiry) >= time()) {
+        $_SESSION['verified'] = true;
+        header("Location: reset_password.php");
+        exit();
+    } else {
+        $message = "❌ Invalid or expired OTP.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head><title>Verify OTP</title></head>
+<body>
+    <h2>Enter OTP</h2>
+    <form method="post">
+        <input type="text" name="otp" placeholder="Enter OTP" required><br><br>
+        <button type="submit">Verify</button>
+    </form>
+    <?php if ($message) echo "<p style='color:red;'>$message</p>"; ?>
+</body>
+</html>
+
+
+// reset_password.php
+<?php
+session_start();
+$conn = new mysqli("localhost", "root", "root", "icspl");
+
+if (!isset($_SESSION['reset_email']) || !isset($_SESSION['verified'])) {
+    header("Location: forgot_password.php");
+    exit();
+}
+
+$message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_SESSION['reset_email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    $stmt = $conn->prepare("UPDATE admin_users SET password = ?, otp = NULL, otp_expiry = NULL WHERE email = ?");
+    $stmt->bind_param("ss", $password, $email);
+    $stmt->execute();
+
+    session_unset();
+    session_destroy();
+
+    $message = "✅ Password has been reset successfully! <a href='login.php'>Login</a>";
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head><title>Reset Password</title></head>
+<body>
+    <h2>Reset Password</h2>
+    <form method="post">
+        <input type="password" name="password" placeholder="New Password" required><br><br>
+        <button type="submit">Reset Password</button>
+    </form>
+    <?php if ($message) echo "<p style='color:green;'>$message</p>"; ?>
 </body>
 </html>

@@ -1,43 +1,46 @@
 <?php
+session_start();
 $conn = new mysqli("localhost", "root", "root", "icspl");
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
-    $plainPassword = $_POST["password"];
+    $otp = rand(100000, 999999);
+    $expiry = date("Y-m-d H:i:s", strtotime("+10 minutes"));
 
-    if (!preg_match('/@gmail\.com$/', $email)) {
-        $message = "❌ Only Gmail addresses are allowed.";
-    } else {
-        $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+    $stmt = $conn->prepare("SELECT id FROM admin_users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
 
-        $stmt = $conn->prepare("INSERT INTO admin_users (email, password) VALUES (?, ?)");
-        $stmt->bind_param("ss", $email, $hashedPassword);
+    if ($stmt->num_rows === 1) {
+        $stmt = $conn->prepare("UPDATE admin_users SET otp = ?, otp_expiry = ? WHERE email = ?");
+        $stmt->bind_param("sss", $otp, $expiry, $email);
+        $stmt->execute();
 
-        try {
-            $stmt->execute();
-            header("Location: login.php");
+        // Send OTP via email (requires mail() to be configured)
+        $subject = "Your OTP to reset password";
+        $body = "Your OTP is: $otp. It is valid for 10 minutes.";
+        $headers = "From: no-reply@icspl.com";
+
+        if (mail($email, $subject, $body, $headers)) {
+            $_SESSION['reset_email'] = $email;
+            header("Location: verify_otp.php");
             exit();
-        } catch (mysqli_sql_exception $e) {
-            if (str_contains($e->getMessage(), 'Duplicate entry')) {
-                $message = "❌ Sorry, this email is already registered.";
-            } else {
-                $message = "❌ Error: " . $e->getMessage();
-            }
+        } else {
+            $message = "❌ Failed to send OTP. Please try again.";
         }
-
-        $stmt->close();
+    } else {
+        $message = "⚠️ Email not found.";
     }
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create Admin User</title>
+    <title>Forgot Password</title>
     <style>
         * {
             box-sizing: border-box;
@@ -113,15 +116,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .message {
+        .error {
             margin-top: 15px;
             text-align: center;
-            font-size: 14px;
-            color: green;
-        }
-
-        .error {
             color: red;
+            font-size: 14px;
         }
 
         .login-icon {
@@ -134,22 +133,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="login-box">
-        <div class="login-icon">🛠️</div>
-        <h2>Create Admin (Gmail only)</h2>
+        <div class="login-icon">📨</div>
+        <h2>Forgot Password</h2>
         <form method="post">
             <div class="form-group">
-                <input type="email" name="email" placeholder="📧 Gmail (e.g., name@gmail.com)" required>
+                <input type="email" name="email" placeholder="📧 Enter your registered email" required>
             </div>
-            <div class="form-group">
-                <input type="password" name="password" placeholder="🔒 Password" required>
-            </div>
-            <button type="submit">Create Admin</button>
+            <button type="submit">Send OTP</button>
         </form>
-        <?php if (!empty($message)): ?>
-            <div class="message <?= str_contains($message, 'Error') || str_contains($message, '❌') ? 'error' : '' ?>">
-                <?= $message ?>
-            </div>
-        <?php endif; ?>
+        <?php if ($message) echo "<div class='error'>$message</div>"; ?>
     </div>
 </body>
 </html>

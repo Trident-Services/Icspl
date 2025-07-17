@@ -3,11 +3,11 @@ session_start();
 $conn = new mysqli("localhost", "root", "root", "icspl");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"];
+    $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $stmt = $conn->prepare("SELECT password FROM admin_users WHERE username = ?");
-    $stmt->bind_param("s", $username);
+    $stmt = $conn->prepare("SELECT password FROM admin_users WHERE email = ?");
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->fetch();
 
         if (password_verify($password, $hashedPassword)) {
-            $_SESSION["admin"] = $username;
+            $_SESSION["admin"] = $email;
             header("Location: admin.php");
             exit();
         } else {
             $error = "❌ Invalid password.";
         }
     } else {
-        $error = "⚠️ User not found.";
+        $error = "⚠️ Email not found.";
     }
     $stmt->close();
 }
@@ -123,6 +123,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 15px;
         }
 
+        .forgot {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .forgot a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -131,13 +145,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Admin Panel Login</h2>
         <form method="post">
             <div class="form-group">
-                <input type="text" name="username" placeholder="👤 Username" required>
+                <input type="email" name="email" placeholder="📧 Email" required>
             </div>
             <div class="form-group">
                 <input type="password" name="password" placeholder="🔒 Password" required>
             </div>
             <button type="submit">Login</button>
         </form>
+        <div class="forgot">
+            <a href="forgot_password.php">Forgot Password?</a>
+        </div>
         <?php if (!empty($error)) echo "<div class='error'>$error</div>"; ?>
     </div>
 </body>

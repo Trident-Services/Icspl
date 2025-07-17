@@ -1,7 +1,4 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -12,11 +9,10 @@
             "runtimeArgs": [
                 "-S",
                 "localhost:8000",
-                "-t",
-                "."
+                "router.php"
             ],
-            "cwd": "${workspaceRoot}/.",
-           "runtimeExecutable": "C:\\Users\\gsais\\OneDrive\\Documents\\Desktop\\new\\php-8.4.10-Win32-vs17-x64\\php.exe",
+            "cwd": "C:\\Users\\gsais\\OneDrive\\Documents\\ICSPL",
+            "runtimeExecutable": "C:\\Users\\gsais\\OneDrive\\Documents\\Desktop\\new\\php-8.4.10-Win32-vs17-x64\\php.exe",
             "serverReadyAction": {
                 "action": "openExternally"
             }
@@ -29,10 +25,10 @@
             "runtimeArgs": [
                 "-S",
                 "localhost:8000",
-                "-t",
-                "."
+                ".vscode/router.php"
             ],
-            "cwd": "${workspaceRoot}/.",
+            "cwd": "C:\\Users\\gsais\\OneDrive\\Documents\\ICSPL",
+            "runtimeExecutable": "C:\\Users\\gsais\\OneDrive\\Documents\\Desktop\\new\\php-8.4.10-Win32-vs17-x64\\php.exe",
             "serverReadyAction": {
                 "action": "openExternally"
             },
