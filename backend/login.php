@@ -1,6 +1,17 @@
 <?php
 session_start();
 
+// ⏰ Auto logout after 20 minutes (1200 seconds) of inactivity
+$timeout_duration = 100;
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
+    session_unset();
+    session_destroy();
+    header("Location: login.php?timeout=true");
+    exit();
+}
+$_SESSION['last_activity'] = time(); // Update last activity time
+
+// Database connection
 $conn = new mysqli("localhost", "root", "root", "icspl");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -8,11 +19,17 @@ if ($conn->connect_error) {
 
 $error = "";
 
+// Show session timeout message if redirected
+if (isset($_GET["timeout"]) && $_GET["timeout"] === "true") {
+    $error = "⏰ Session expired due to inactivity. Please login again.";
+}
+
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $password = $_POST["password"];
 
-    // Check if email exists
+    // Check if email exists in admin_users table
     $stmt = $conn->prepare("SELECT id, password FROM admin_users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -25,8 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $hashedPassword)) {
             // Successful login
             $_SESSION["admin"] = $email;
+            $_SESSION["last_activity"] = time(); // Set last activity timestamp
 
-            // Log login attempt with email
+            // Log login attempt
             $log_stmt = $conn->prepare("INSERT INTO admin_login_logs (email) VALUES (?)");
             $log_stmt->bind_param("s", $email);
             $log_stmt->execute();
@@ -45,7 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,12 +159,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="login-box">
         <div class="login-icon">🔐</div>
         <h2>Admin Panel Login</h2>
-        <form method="post">
+        <form method="post" autocomplete="off">
             <div class="form-group">
-                <input type="email" name="email" placeholder="📧 Email" required>
+                <input type="email" name="email" placeholder="📧 Email" required autocomplete="off">
             </div>
             <div class="form-group">
-                <input type="password" name="password" placeholder="🔒 Password" required>
+                <input type="password" name="password" placeholder="🔒 Password" required autocomplete="new-password">
             </div>
             <button type="submit">Login</button>
         </form>

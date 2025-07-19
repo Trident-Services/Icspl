@@ -1,38 +1,38 @@
 <?php
 session_start();
 
-// Check if admin is logged in
+// Auto-logout after 20 minutes
+$timeout_duration = 100;
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+    session_unset();
+    session_destroy();
+    header("Location: backend/login.php?timeout=1");
+    exit();
+}
+$_SESSION['LAST_ACTIVITY'] = time();
+
 if (!isset($_SESSION["admin"])) {
     header("Location: backend/login.php");
     exit();
 }
 
-// Handle logout
 if (isset($_GET["logout"])) {
     session_destroy();
     header("Location: logout.php");
     exit();
 }
 
-// Connect to MySQL
 $conn = new mysqli("localhost", "root", "root", "icspl");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch contact submissions
 $sql = "SELECT id, name, phone_number, gmail, requirements FROM users";
 $result = $conn->query($sql);
 
-// Fetch admin users
-$sql_admins = "SELECT id, email, otp_expiry FROM admin_users";
-$result_admins = $conn->query($sql_admins);
-
-// ✅ Fetch admin login logs
 $sql_logs = "SELECT id, email, login_time FROM admin_login_logs ORDER BY login_time DESC";
 $result_logs = $conn->query($sql_logs);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,7 +90,7 @@ $result_logs = $conn->query($sql_logs);
             justify-content: center;
             margin-bottom: 20px;
         }
-        #searchInput {
+        #searchInput, #logDatePicker {
             padding: 12px 16px;
             width: 340px;
             border-radius: 10px;
@@ -100,19 +100,18 @@ $result_logs = $conn->query($sql_logs);
             color: white;
             transition: all 0.3s;
         }
-        #searchInput:focus {
+        #searchInput:focus, #logDatePicker:focus {
             outline: none;
             box-shadow: 0 0 0 2px #3b82f6;
         }
         .table-container {
             width: 95%;
             max-width: 1100px;
-            margin: 0 auto;
+            margin: 0 auto 40px;
             background-color: #1e293b;
             border-radius: 12px;
             overflow-x: auto;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-            margin-bottom: 40px;
         }
         table {
             width: 100%;
@@ -137,7 +136,7 @@ $result_logs = $conn->query($sql_logs);
             color: #f1f5f9;
         }
         @media screen and (max-width: 600px) {
-            #searchInput { width: 90%; }
+            #searchInput, #logDatePicker { width: 90%; }
             h1, h2 { font-size: 24px; }
         }
     </style>
@@ -191,8 +190,12 @@ $result_logs = $conn->query($sql_logs);
 
 <h2>📅 Admin Login Logs</h2>
 
+<div class="search-container">
+    <input type="date" id="logDatePicker" />
+</div>
+
 <div class="table-container">
-    <table>
+    <table id="logTable">
         <thead>
             <tr>
                 <th>Log ID</th>
@@ -219,6 +222,7 @@ $result_logs = $conn->query($sql_logs);
 </div>
 
 <script>
+    // Filter Contact Requirements
     document.getElementById("searchInput").addEventListener("keyup", function () {
         const filter = this.value.toLowerCase();
         const rows = document.querySelectorAll("table tbody tr");
@@ -226,6 +230,18 @@ $result_logs = $conn->query($sql_logs);
         rows.forEach(row => {
             const requirement = row.cells[4]?.textContent.toLowerCase() || "";
             row.style.display = requirement.includes(filter) ? "" : "none";
+        });
+    });
+
+    // Filter Admin Login Logs by Date
+    document.getElementById("logDatePicker").addEventListener("change", function () {
+        const selectedDate = this.value;
+        const rows = document.querySelectorAll("#logTable tbody tr");
+
+        rows.forEach(row => {
+            const loginTime = row.cells[2]?.textContent || "";
+            const logDate = loginTime.split(" ")[0];
+            row.style.display = (!selectedDate || logDate === selectedDate) ? "" : "none";
         });
     });
 </script>
