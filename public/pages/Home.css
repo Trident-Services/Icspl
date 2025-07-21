@@ -73,3 +73,21 @@
       .slide-indicator.active {
         background-color: white;
       }
+.scroll-box {
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #1f2937;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+.scroll-box::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-box::-webkit-scrollbar-track {
+  background: #374151;
+}
+.scroll-box::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}

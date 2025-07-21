@@ -25,6 +25,24 @@
     #mobile-menu {
       transition: all 0.3s ease;
     }
+    .scroll-box {
+      max-height: 150px;
+      overflow-y: auto;
+      background-color: #1f2937;
+      border: 1px solid #4b5563;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+    }
+    .scroll-box::-webkit-scrollbar {
+      width: 8px;
+    }
+    .scroll-box::-webkit-scrollbar-track {
+      background: #374151;
+    }
+    .scroll-box::-webkit-scrollbar-thumb {
+      background: #6b7280;
+      border-radius: 4px;
+    }
   </style>
   <script>
     function toggleMenu() {
@@ -147,7 +165,89 @@
 
         <div>
           <label class="block font-medium mb-2">Requirements</label>
-          <textarea name="requirements" class="w-full bg-gray-800 border border-gray-600 p-3 rounded-lg focus:outline-none focus:border-white" rows="5" placeholder="Your message..." required></textarea>
+          
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">Services (Select one or more):</label>
+            <div class="scroll-box">
+              <div class="space-y-2">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="services[]" value="IT Consulting" class="rounded">
+                  <span>IT Consulting</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="services[]" value="Software Development" class="rounded">
+                  <span>Software Development</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="services[]" value="Cloud Solutions" class="rounded">
+                  <span>Cloud Solutions</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="services[]" value="Cybersecurity" class="rounded">
+                  <span>Cybersecurity</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="services[]" value="Data Analytics" class="rounded">
+                  <span>Data Analytics</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="services[]" value="AI/ML Solutions" class="rounded">
+                  <span>AI/ML Solutions</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="services[]" value="IoT Development" class="rounded">
+                  <span>IoT Development</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="services[]" value="Blockchain Solutions" class="rounded">
+                  <span>Blockchain Solutions</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">Sectors (Select one or more):</label>
+            <div class="scroll-box">
+              <div class="space-y-2">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="sectors[]" value="Healthcare" class="rounded">
+                  <span>Healthcare</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="sectors[]" value="Finance" class="rounded">
+                  <span>Finance</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="sectors[]" value="Education" class="rounded">
+                  <span>Education</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="sectors[]" value="Retail" class="rounded">
+                  <span>Retail</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="sectors[]" value="Manufacturing" class="rounded">
+                  <span>Manufacturing</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="sectors[]" value="Government" class="rounded">
+                  <span>Government</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="sectors[]" value="Telecom" class="rounded">
+                  <span>Telecom</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" name="sectors[]" value="Transportation" class="rounded">
+                  <span>Transportation</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <label class="block text-sm font-medium mb-2">Additional Message:</label>
+          <textarea name="additional_message" class="w-full bg-gray-800 border border-gray-600 p-3 rounded-lg focus:outline-none focus:border-white" rows="3" placeholder="Any additional information..."></textarea>
         </div>
 
         <button type="submit" class="bg-white text-black px-8 py-3 rounded-lg hover:bg-gray-200">Send Message</button>

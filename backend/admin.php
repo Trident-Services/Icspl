@@ -27,7 +27,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, name, phone_number, gmail, requirements FROM users";
+$sql = "SELECT id, name, phone_number, gmail, requirements, services, sectors, additional_message FROM users";
 $result = $conn->query($sql);
 
 $sql_logs = "SELECT id, email, login_time FROM admin_login_logs ORDER BY login_time DESC";
@@ -116,7 +116,7 @@ $result_logs = $conn->query($sql_logs);
         table {
             width: 100%;
             border-collapse: collapse;
-            overflow: hidden;
+            overflow: auto;
         }
         th, td {
             padding: 16px;
@@ -146,7 +146,7 @@ $result_logs = $conn->query($sql_logs);
 <div class="header">
     <div class="admin-info">
         <img src="https://img.freepik.com/premium-photo/3d-sales-manager-character-leading-with-animated-ambition_893571-11254.jpg" alt="Admin">
-        <strong>Welcome, <?php echo htmlspecialchars($_SESSION["admin"]); ?></strong>
+        <strong>Welcome, <?php echo htmlspecialchars($_SESSION["admin"] ?? 'Admin'); ?></strong>
     </div>
     <a class="logout-btn" href="?logout=true">Logout</a>
 </div>
@@ -166,6 +166,9 @@ $result_logs = $conn->query($sql_logs);
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Requirements</th>
+                <th>Services</th>
+                <th>Sectors</th>
+                <th>Additional Message</th>
             </tr>
         </thead>
         <tbody>
@@ -173,15 +176,18 @@ $result_logs = $conn->query($sql_logs);
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
-                            <td>{$row["id"]}</td>
-                            <td>" . htmlspecialchars($row["name"]) . "</td>
-                            <td>{$row["phone_number"]}</td>
-                            <td>{$row["gmail"]}</td>
-                            <td>" . htmlspecialchars($row["requirements"]) . "</td>
+                            <td>" . htmlspecialchars($row["id"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($row["name"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($row["phone_number"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($row["gmail"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($row["requirements"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($row["services"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($row["sectors"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($row["additional_message"] ?? '') . "</td>
                           </tr>";
                 }
             } else {
-                echo "<tr><td colspan='5' style='text-align:center;'>No submissions found.</td></tr>";
+                echo "<tr><td colspan='8' style='text-align:center;'>No submissions found.</td></tr>";
             }
             ?>
         </tbody>
@@ -208,9 +214,9 @@ $result_logs = $conn->query($sql_logs);
             if ($result_logs && $result_logs->num_rows > 0) {
                 while ($log = $result_logs->fetch_assoc()) {
                     echo "<tr>
-                            <td>{$log["id"]}</td>
-                            <td>{$log["email"]}</td>
-                            <td>{$log["login_time"]}</td>
+                            <td>" . htmlspecialchars($log["id"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($log["email"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($log["login_time"] ?? '') . "</td>
                           </tr>";
                 }
             } else {
