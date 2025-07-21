@@ -1,8 +1,9 @@
 <?php
 session_start();
 
-// Auto-logout after 20 minutes
+// Auto-logout after 100 seconds (you may want to change it back to 1200 for 20 mins)
 $timeout_duration = 100;
+
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
     session_unset();
     session_destroy();
@@ -22,14 +23,17 @@ if (isset($_GET["logout"])) {
     exit();
 }
 
+// DB Connection
 $conn = new mysqli("localhost", "root", "root", "icspl");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, name, phone_number, gmail, requirements, services, sectors, additional_message FROM users";
+// Query submissions (removed `requirements`)
+$sql = "SELECT id, name, phone_number, gmail, services, sectors, additional_message FROM users";
 $result = $conn->query($sql);
 
+// Query login logs
 $sql_logs = "SELECT id, email, login_time FROM admin_login_logs ORDER BY login_time DESC";
 $result_logs = $conn->query($sql_logs);
 ?>
@@ -105,8 +109,8 @@ $result_logs = $conn->query($sql_logs);
             box-shadow: 0 0 0 2px #3b82f6;
         }
         .table-container {
-            width: 95%;
-            max-width: 1100px;
+            width: 98%;
+            max-width: 1400px;
             margin: 0 auto 40px;
             background-color: #1e293b;
             border-radius: 12px;
@@ -116,7 +120,6 @@ $result_logs = $conn->query($sql_logs);
         table {
             width: 100%;
             border-collapse: collapse;
-            overflow: auto;
         }
         th, td {
             padding: 16px;
@@ -154,7 +157,7 @@ $result_logs = $conn->query($sql_logs);
 <h1>📥 Contact Submissions</h1>
 
 <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search requirements...">
+    <input type="text" id="searchInput" placeholder="Search email or name...">
 </div>
 
 <div class="table-container">
@@ -165,7 +168,6 @@ $result_logs = $conn->query($sql_logs);
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>Requirements</th>
                 <th>Services</th>
                 <th>Sectors</th>
                 <th>Additional Message</th>
@@ -176,18 +178,17 @@ $result_logs = $conn->query($sql_logs);
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
-                            <td>" . htmlspecialchars($row["id"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($row["name"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($row["phone_number"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($row["gmail"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($row["requirements"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($row["services"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($row["sectors"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($row["additional_message"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($row["id"]) . "</td>
+                            <td>" . htmlspecialchars($row["name"]) . "</td>
+                            <td>" . htmlspecialchars($row["phone_number"]) . "</td>
+                            <td>" . htmlspecialchars($row["gmail"]) . "</td>
+                            <td>" . htmlspecialchars($row["services"]) . "</td>
+                            <td>" . htmlspecialchars($row["sectors"]) . "</td>
+                            <td>" . htmlspecialchars($row["additional_message"]) . "</td>
                           </tr>";
                 }
             } else {
-                echo "<tr><td colspan='8' style='text-align:center;'>No submissions found.</td></tr>";
+                echo "<tr><td colspan='7' style='text-align:center;'>No submissions found.</td></tr>";
             }
             ?>
         </tbody>
@@ -214,9 +215,9 @@ $result_logs = $conn->query($sql_logs);
             if ($result_logs && $result_logs->num_rows > 0) {
                 while ($log = $result_logs->fetch_assoc()) {
                     echo "<tr>
-                            <td>" . htmlspecialchars($log["id"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($log["email"] ?? '') . "</td>
-                            <td>" . htmlspecialchars($log["login_time"] ?? '') . "</td>
+                            <td>" . htmlspecialchars($log["id"]) . "</td>
+                            <td>" . htmlspecialchars($log["email"]) . "</td>
+                            <td>" . htmlspecialchars($log["login_time"]) . "</td>
                           </tr>";
                 }
             } else {
@@ -228,18 +229,19 @@ $result_logs = $conn->query($sql_logs);
 </div>
 
 <script>
-    // Filter Contact Requirements
+    // Filter Contact Submissions (by name/email)
     document.getElementById("searchInput").addEventListener("keyup", function () {
         const filter = this.value.toLowerCase();
         const rows = document.querySelectorAll("table tbody tr");
 
         rows.forEach(row => {
-            const requirement = row.cells[4]?.textContent.toLowerCase() || "";
-            row.style.display = requirement.includes(filter) ? "" : "none";
+            const name = row.cells[1]?.textContent.toLowerCase() || "";
+            const email = row.cells[3]?.textContent.toLowerCase() || "";
+            row.style.display = (name.includes(filter) || email.includes(filter)) ? "" : "none";
         });
     });
 
-    // Filter Admin Login Logs by Date
+    // Filter Admin Logs by Date
     document.getElementById("logDatePicker").addEventListener("change", function () {
         const selectedDate = this.value;
         const rows = document.querySelectorAll("#logTable tbody tr");

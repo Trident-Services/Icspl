@@ -17,12 +17,12 @@ if (
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $gmail = mysqli_real_escape_string($conn, $_POST['gmail']);
     $additional_message = isset($_POST['additional_message']) ? mysqli_real_escape_string($conn, $_POST['additional_message']) : '';
-    
+
     // Process checkboxes
     $services = isset($_POST['services']) ? implode(", ", $_POST['services']) : 'None selected';
     $sectors = isset($_POST['sectors']) ? implode(", ", $_POST['sectors']) : 'None selected';
-    
-    // Email domain validation
+
+    // Validate email domain
     $allowed_domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'protonmail.com', 'icloud.com'];
     $domain = substr(strrchr($gmail, "@"), 1);
 
@@ -31,13 +31,13 @@ if (
         exit();
     }
 
-    // Phone number validation
+    // Validate phone number format (+countrycode)
     if (!preg_match('/^\+\d{6,15}$/', $phone)) {
         header("Location: /public/pages/invalid-phone.html");
         exit();
     }
 
-    // Prepare SQL statement with additional fields
+    // Insert data into database (no `requirements` column anymore)
     $stmt = $conn->prepare("INSERT INTO users (name, phone_number, gmail, services, sectors, additional_message) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssss", $name, $phone, $gmail, $services, $sectors, $additional_message);
 
@@ -52,6 +52,7 @@ if (
 
     $stmt->close();
 } else {
+    // Required fields missing
     header("Location: /public/pages/error.html");
     exit();
 }
