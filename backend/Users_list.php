@@ -2,7 +2,7 @@
 session_start();
 
 // Auto logout logic
-$timeout_duration = 1200; //20minutes
+$timeout_duration = 1200; // 20 minutes
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
     session_unset();
     session_destroy();
@@ -22,27 +22,29 @@ if (isset($_GET["logout"])) {
     exit();
 }
 
-// DB Connection
 $conn = new mysqli("localhost", "root", "root", "icspl");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch submissions
-$sql = "SELECT id, name, phone_number, gmail, services, sectors, additional_message FROM users";
+$sql = "SELECT id, name, phone_number, gmail FROM users";
 $result = $conn->query($sql);
-
-// Fetch login logs
-$sql_logs = "SELECT id, email, login_time FROM admin_login_logs ORDER BY login_time DESC";
-$result_logs = $conn->query($sql_logs);
+$count_sql = "SELECT COUNT(*) as total_users FROM users";
+$count_result = $conn->query($count_sql);
+$total_users = 0;
+if ($count_result && $count_result->num_rows > 0) {
+    $row = $count_result->fetch_assoc();
+    $total_users = $row['total_users'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <title>User List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -113,29 +115,19 @@ $result_logs = $conn->query($sql_logs);
         .nav-links .logout-btn:hover {
             background-color: #dc2626;
         }
-        h1, h2 {
+        h1 {
             text-align: center;
-            margin: 40px 0 20px;
+            margin: 40px 0 10px;
             font-size: 32px;
         }
-        .search-container {
-            display: flex;
-            justify-content: center;
+        .user-count {
+            text-align: center;
+            font-size: 18px;
             margin-bottom: 20px;
         }
-        #searchInput, #logDatePicker {
-            padding: 12px 16px;
-            width: 340px;
-            border-radius: 10px;
-            border: none;
-            font-size: 16px;
-            background-color: #1e293b;
-            color: white;
-            transition: all 0.3s;
-        }
-        #searchInput:focus, #logDatePicker:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px #3b82f6;
+        .chart-container {
+            max-width: 500px;
+            margin: 0 auto 30px;
         }
         .table-container {
             width: 98%;
@@ -168,17 +160,15 @@ $result_logs = $conn->query($sql_logs);
             color: #f1f5f9;
         }
         @media screen and (max-width: 600px) {
-            #searchInput, #logDatePicker { width: 90%; }
-            h1, h2 { font-size: 24px; }
+            h1 { font-size: 24px; }
         }
     </style>
 </head>
 <body>
-
 <div class="header">
     <div class="admin-info">
         <img src="https://img.freepik.com/premium-photo/3d-sales-manager-character-leading-with-animated-ambition_893571-11254.jpg" alt="Admin">
-        <strong>Welcome, <?php echo htmlspecialchars($_SESSION["admin"] ?? 'Admin'); ?></strong>
+        <strong>Welcome, <?php echo htmlspecialchars($_SESSION["admin"]); ?></strong>
     </div>
     <nav class="nav-links">
         <a href="./admin.php">Dashboard</a>
@@ -188,99 +178,73 @@ $result_logs = $conn->query($sql_logs);
     </nav>
 </div>
 
-<h1>📥 Contact Submissions</h1>
-<div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search email or name...">
+<h1>👥 Registered Users</h1>
+<p class="user-count">Total Users: <?php echo $total_users; ?></p>
+<div class="chart-container">
+    <canvas id="userChart"></canvas>
 </div>
 <div class="table-container">
     <table>
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Services</th>
-                <th>Sectors</th>
-                <th>Additional Message</th>
-            </tr>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+        </tr>
         </thead>
         <tbody>
-            <?php
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>" . htmlspecialchars($row["id"]) . "</td>
-                            <td>" . htmlspecialchars($row["name"]) . "</td>
-                            <td>" . htmlspecialchars($row["phone_number"]) . "</td>
-                            <td>" . htmlspecialchars($row["gmail"]) . "</td>
-                            <td>" . htmlspecialchars($row["services"]) . "</td>
-                            <td>" . htmlspecialchars($row["sectors"]) . "</td>
-                            <td>" . htmlspecialchars($row["additional_message"]) . "</td>
-                          </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='7' style='text-align:center;'>No submissions found.</td></tr>";
+        <?php
+        if ($result->num_rows > 0) {
+            while ($user = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>" . htmlspecialchars($user['id']) . "</td>
+                        <td>" . htmlspecialchars($user['name']) . "</td>
+                        <td>" . htmlspecialchars($user['phone_number']) . "</td>
+                        <td>" . htmlspecialchars($user['gmail']) . "</td>
+                      </tr>";
             }
-            ?>
+        } else {
+            echo "<tr><td colspan='4' style='text-align:center;'>No users found.</td></tr>";
+        }
+        ?>
         </tbody>
     </table>
 </div>
-
-<h2>🗕️ Admin Login Logs</h2>
-<div class="search-container">
-    <input type="date" id="logDatePicker" />
-</div>
-<div class="table-container">
-    <table id="logTable">
-        <thead>
-            <tr>
-                <th>Log ID</th>
-                <th>Admin Email</th>
-                <th>Login Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result_logs && $result_logs->num_rows > 0) {
-                while ($log = $result_logs->fetch_assoc()) {
-                    echo "<tr>
-                            <td>" . htmlspecialchars($log["id"]) . "</td>
-                            <td>" . htmlspecialchars($log["email"]) . "</td>
-                            <td>" . htmlspecialchars($log["login_time"]) . "</td>
-                          </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='3' style='text-align:center;'>No login logs found.</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
-
 <script>
-    document.getElementById("searchInput").addEventListener("keyup", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("table tbody tr");
-
-        rows.forEach(row => {
-            const name = row.cells[1]?.textContent.toLowerCase() || "";
-            const email = row.cells[3]?.textContent.toLowerCase() || "";
-            row.style.display = (name.includes(filter) || email.includes(filter)) ? "" : "none";
-        });
-    });
-
-    document.getElementById("logDatePicker").addEventListener("change", function () {
-        const selectedDate = this.value;
-        const rows = document.querySelectorAll("#logTable tbody tr");
-
-        rows.forEach(row => {
-            const loginTime = row.cells[2]?.textContent || "";
-            const logDate = loginTime.split(" ")[0];
-            row.style.display = (!selectedDate || logDate === selectedDate) ? "" : "none";
-        });
-    });
+const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const data = {
+    labels: labels,
+    datasets: [{
+        label: 'New Users This Week',
+        backgroundColor: '#3b82f6',
+        borderColor: '#60a5fa',
+        data: [2, 4, 3, 5, 1, 6, 4],
+        fill: true,
+        tension: 0.4
+    }]
+};
+const config = {
+    type: 'line',
+    data: data,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: '#cbd5e1' }
+            },
+            y: {
+                ticks: { color: '#cbd5e1' }
+            }
+        }
+    }
+};
+new Chart(document.getElementById('userChart'), config);
 </script>
-
 </body>
 </html>

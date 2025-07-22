@@ -45,6 +45,13 @@
     }
   </style>
   <script>
+      function toggleSubSectors(id) {
+    const sub = document.getElementById("sub-" + id);
+    if (sub) {
+      sub.classList.toggle("hidden");
+    }
+  }
+
     function toggleMenu() {
       const menu = document.getElementById("mobile-menu");
       menu.classList.toggle("hidden");
@@ -206,45 +213,53 @@
             </div>
           </div>
 
-          <div class="mb-4">
-            <label class="block text-sm font-medium mb-2">Sectors (Select one or more):</label>
-            <div class="scroll-box">
-              <div class="space-y-2">
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="sectors[]" value="Healthcare" class="rounded">
-                  <span>Healthcare</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="sectors[]" value="Finance" class="rounded">
-                  <span>Finance</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="sectors[]" value="Education" class="rounded">
-                  <span>Education</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="sectors[]" value="Retail" class="rounded">
-                  <span>Retail</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="sectors[]" value="Manufacturing" class="rounded">
-                  <span>Manufacturing</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="sectors[]" value="Government" class="rounded">
-                  <span>Government</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="sectors[]" value="Telecom" class="rounded">
-                  <span>Telecom</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="sectors[]" value="Transportation" class="rounded">
-                  <span>Transportation</span>
-                </label>
-              </div>
-            </div>
-          </div>
+<div class="mb-4">
+  <label class="block text-sm font-medium mb-2">Sectors (Select one or more):</label>
+  <div class="scroll-box space-y-2">
+
+    <!-- Sector 1 -->
+    <div>
+      <label class="flex items-center space-x-2 cursor-pointer" onclick="toggleSubSectors('its')">
+        <input type="checkbox" name="sectors[]" value="ITS and Smart Parking" class="rounded">
+        <span>Intelligent Transportation & Mobility</span>
+      </label>
+      <div id="sub-its" class="ml-6 mt-2 hidden space-y-1 text-sm text-gray-300">
+        <label class="block"><input type="checkbox" name="subsectors[]" value="ITS AND Smart Parking" class="mr-2">ITS AND Smart Parking</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Trolling solutions" class="mr-2">Trolling Solutions</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Tunnel Automation" class="mr-2">Tunnel Automation</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Smart Traffic Controls" class="mr-2">Smart Traffic Controls</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Vehicle Detection Systems" class="mr-2">Vehicle Detection Systems</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Road Weather & Incident Detection" class="mr-2">Road Weather & Incident Detection</label>
+      </div>
+    </div>
+
+    <!-- Sector 2 -->
+    <div>
+      <label class="flex items-center space-x-2 cursor-pointer" onclick="toggleSubSectors('toll')">
+        <input type="checkbox" name="sectors[]" value="Tolling Solutions" class="rounded">
+        <span>Smart City & IoT</span>
+      </label>
+      <div id="sub-toll" class="ml-6 mt-2 hidden space-y-1 text-sm text-gray-300">
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Smart City Integration" class="mr-2">Smart City Integration</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="IoT Deployments" class="mr-2">IoT Deployments</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="V2X Communication" class="mr-2">V2X Communication</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Static Weigh Stations" class="mr-2">Static Weigh Stations</label>
+      </div>
+    </div>
+
+    <!-- Repeat for other sectors similarly -->
+         <div>
+      <label class="flex items-center space-x-2 cursor-pointer" onclick="toggleSubSectors('toll')">
+        <input type="checkbox" name="sectors[]" value="Tolling Solutions" class="rounded">
+        <span>Defense & Security</span>
+      </label>
+      <div id="sub-toll" class="ml-6 mt-2 hidden space-y-1 text-sm text-gray-300">
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Military Technologies" class="mr-2">Military Technologies</label>
+        <label class="block"><input type="checkbox" name="subsectors[]" value="Security Systems" class="mr-2">Security Systems</label>
+      </div>
+    </div>
+    </div>
+    </div>
 
           <label class="block text-sm font-medium mb-2">Additional Message:</label>
           <textarea name="additional_message" class="w-full bg-gray-800 border border-gray-600 p-3 rounded-lg focus:outline-none focus:border-white" rows="3" placeholder="Any additional information..."></textarea>
