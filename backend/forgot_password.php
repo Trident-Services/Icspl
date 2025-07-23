@@ -1,9 +1,12 @@
 <?php
 session_start();
-require 'vendor/autoload.php'; // Required for PHPMailer
+require_once 'PHPMailer/PHPMailer.php';
+require_once 'PHPMailer/SMTP.php';
+require_once 'PHPMailer/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
 
 $conn = new mysqli("localhost", "root", "root", "icspl");
 $message = "";
@@ -31,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'your_email@gmail.com';         // 🔁 Replace with your Gmail
-            $mail->Password   = 'your_app_password';            // 🔁 Replace with App Password
+            $mail->Username   = 'gsreekarr@gmail.com';         // 🔁 Replace with your Gmail
+            $mail->Password   = 'vfqhctwtgtupbvvd';            // 🔁 Replace with App Password
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
